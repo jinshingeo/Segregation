@@ -1,4 +1,48 @@
 # ============================================================
+# [빠른 시작 — 이 파일을 어떻게 쓰는가]
+# ============================================================
+#
+# [STEP 1] 이 파일을 불러와서 함수를 등록한다
+#   source("white1983_SP_v2.R")
+#
+# [STEP 2] 데이터를 준비한다
+#   load("segdata.rda")                  # segdata 불러오기
+#   xy <- expand.grid(1:10, 1:10)        # 10x10 격자 좌표 생성
+#   pattern1 <- segdata[, 1:2]           # 테스트용 패턴 1 (A1/A2)
+#   pattern2 <- segdata[, 5:6]           # 테스트용 패턴 2 (C1/C2)
+#
+# [STEP 3] SP 값 한 줄로 계산한다
+#
+#   - 기본 사용 (가장 짧은 형태, 좌표 자동 생성):
+#     result <- SP_index(data=pattern1, minority="A1", majority="A2")
+#
+#   - 좌표 직접 지정:
+#     result <- SP_index(data=pattern1, minority="A1", majority="A2", x=xy[,1], y=xy[,2])
+#
+#   - SP 값만 꺼내기:
+#     result$SP
+#
+#   - 8개 시나리오 한 번에:
+#     SP_batch(data=segdata, pairs=list(A=c("A1","A2"), B=c("B1","B2"),
+#              C=c("C1","C2"), D=c("D1","D2"), E=c("E1","E2"),
+#              F=c("F1","F2"), G=c("G1","G2"), H=c("H1","H2")),
+#              x=xy[,1], y=xy[,2])
+#
+# [반환값 목록]
+#   result$SP             → SP 지수 값 (핵심)
+#   result$P_xx           → 소수집단 내 평균 근접도
+#   result$P_yy           → 다수집단 내 평균 근접도
+#   result$P_xy           → 집단 간 평균 근접도
+#   result$P_tt           → 전체 인구 평균 근접도
+#   result$identity_check → 항등식 검증 통과 여부 (TRUE/FALSE)
+#   result$summary        → 전체 요약 테이블
+#
+# [주요 파라미터 (기본값에서 변경 가능)]
+#   within_coef = 0.6   → within-tract 거리 근사 계수 (White 1983 기준)
+#   prox_method = "exp" → 근접성 함수 ("exp" 또는 "inverse")
+#   area        = 1.0   → tract 면적 km² (단일값 또는 tract별 벡터)
+#
+# ============================================================
 # 파일명 : white1983_SP_v2.R
 # 목적   : White(1983) 공간 인접성 지수(SP) 패키지 — 사용자 친화 버전
 # 변경점 : v1 대비
